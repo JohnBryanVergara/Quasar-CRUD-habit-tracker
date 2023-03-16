@@ -11,6 +11,13 @@ export const useHabitStore = defineStore('habit', {
     habits: [],
   }),
 
+  getters: {
+    habitsCheckedCount({ habits }) {
+      const checkedCount = habits.filter((habit) => habit.completed).length;
+      return checkedCount / habits.length;
+    },
+  },
+
   actions: {
     async fetch() {
       const res = await api.get('/habits');
@@ -24,9 +31,17 @@ export const useHabitStore = defineStore('habit', {
       await api.delete(`/habits/${id}`);
       this.habits = this.habits.filter((habit) => habit.id !== id);
     },
-    async edit(id, newTitle) {
+    async edit(id, newTitle, completed) {
       await api.put(`/habits/${id}`, {
         title: newTitle,
+        completed,
+      });
+      this.habits = this.habits.map((habit) => {
+        if (habit.id == id) {
+          habit.title = newTitle;
+          habit.completed = completed;
+        }
+        return habit;
       });
     },
   },

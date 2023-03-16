@@ -1,3 +1,9 @@
 {
-  "habits": []
+  "habits": [
+    {
+      "title": "asdasdsadasd",
+      "completed": false,
+      "id": 1
+    }
+  ]
 }
